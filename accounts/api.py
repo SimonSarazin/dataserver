@@ -12,6 +12,8 @@ from tastypie.models import ApiKey, create_api_key
 from tastypie.resources import ModelResource
 from tastypie.utils import trailing_slash
 
+from dataserver.authorization import GuardianAuthorization
+
 class UserResource(ModelResource):
     class Meta:
         queryset = User.objects.exclude(pk=-1) # Exclude anonymous user
@@ -140,8 +142,13 @@ class GroupResource(ModelResource):
     class Meta:
         queryset = Group.objects.all()
         resource_name = 'account/group'
-        authentication = Authentication()
-        authorization = Authorization()
+        authentication = ApiKeyAuthentication()
+        authorization = GuardianAuthorization(
+            create_permission_code="add_group",
+            view_permission_code="change_group",
+            update_permission_code="change_group",
+            delete_permission_code="delete_group"
+        )
 
     users = fields.ToManyField(UserResource, 'user_set', full=True)
 
