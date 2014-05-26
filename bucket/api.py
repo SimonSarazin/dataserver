@@ -29,7 +29,7 @@ class BucketResource(ModelResource):
         resource_name = 'bucket/bucket'
         always_return_data = True        
         queryset = Bucket.objects.all()
-
+ 
     files = fields.ToManyField('bucket.api.BucketFileResource', 'files', full=True, null=True)
 
     def obj_create(self, bundle, **kwargs):
@@ -101,6 +101,7 @@ class BucketFileResource(ModelResource):
     def file_search(self, request, **kwargs):
         self.method_check(request, allowed=['get'])
         self.throttle_check(request)
+        self.is_authenticated(request)
 
         # URL params
         bucket_id = kwargs['bucket_id'] 
