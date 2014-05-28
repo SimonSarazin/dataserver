@@ -15,8 +15,10 @@ class CMSRedirectView(RedirectView):
     - Then: redirect to cms user home page
   """
   def get_redirect_url(self, **kwargs):
-      return self.page.get_absolute_url()
-  
+        url = self.page.get_absolute_url()
+        url += "?edit"
+        return url
+
   @method_decorator(login_required)
   def dispatch(self, request, *args, **kwargs):
     
@@ -29,7 +31,7 @@ class CMSRedirectView(RedirectView):
       page_name = 'home-%s' % (request.user)
       self.page = create_page(page_name, settings.PROJECT_PAGE_TEMPLATE, 'fr', created_by=request.user, published=True, in_navigation=True)
       # assign user to created page
-      assign_user_to_page(self.page, request.user, can_add=True, can_change=True, can_change_advanced_settings=True, can_publish=True)
+      assign_user_to_page(self.page, request.user, can_add=True, can_change=True, can_change_advanced_settings=True, can_publish=True, can_change_permissions=True)
       # logo 
       logo_ph = self.page.placeholders.get(slot='logo')
       add_plugin(logo_ph, 'PicturePlugin', 'fr')
