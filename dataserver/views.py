@@ -58,7 +58,7 @@ class CMSRedirectView(RedirectView):
                'can_delete':False,
                'can_change_advanced_settings': True,
                'can_publish': True,
-               'can_change_permissions': True,
+               'can_change_permissions': False,
                'can_view': False,
            }
         page_permission = PagePermission(page=self.page, group=user_group, **perm_data)
