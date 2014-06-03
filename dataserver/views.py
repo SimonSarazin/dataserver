@@ -25,8 +25,8 @@ class CMSRedirectView(RedirectView):
   @method_decorator(login_required)
   def dispatch(self, request, *args, **kwargs):
     """
-    GUP specific:
-    1/ get current user group
+    GUP specific 
+    1/ get current user first group
         u.groups.all()[0]
     2a/ get page associated to group
         g.pagepermission_set.all()[0].page
@@ -38,23 +38,20 @@ class CMSRedirectView(RedirectView):
         assign_perm("cms.change_page", user_or_group=g, obj=self.page)
         assign_perm("cms.publish_page", user_or_group=g, obj=self.page)
     """
+    # FIXME : should implement multi-groups management
     user_group = request.user.groups.all()[0]
-    print "User Group = %s " % user_group
 
     # check if logged in user has already created a page 
     try:
         #self.page = Page.objects.get(created_by=request.user, in_navigation=True, publisher_is_draft=True, is_home = False, template=settings.PROJECT_PAGE_TEMPLATE)
-        content_type_manager = ContentTypeManager()
-        content_type = content_type_manager.get_for_model(Page)
-        group_page_permission = user_group.groupobjectpermission_set.all().filter(content_type=content_type)[0]
-        self.page = Page.objects.get(pk=group_page_permission.object_pk)
-
+        pp = PagePermission.objects.filter(group=user_group)[0]
+        self.page = pp.page
     except:      
         # else, create page and hook plugins to placeholders :      
         page_name = 'home-%s' % (user_group)
         self.page = create_page(page_name, settings.PROJECT_PAGE_TEMPLATE, 'fr', created_by=request.user, published=True, in_navigation=True)
         # assign group to created page
-        data = {
+        perm_data = {
                'can_change': True,
                'can_add': False,
                'can_move_page':False,
@@ -62,9 +59,9 @@ class CMSRedirectView(RedirectView):
                'can_change_advanced_settings': True,
                'can_publish': True,
                'can_change_permissions': True,
-               'can_view': True,
+               'can_view': False,
            }
-        page_permission = PagePermission(page=self.page, group=user_group, **data)
+        page_permission = PagePermission(page=self.page, group=user_group, **perm_data)
         page_permission.save()
 
         # logo 
