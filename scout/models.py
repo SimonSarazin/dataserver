@@ -149,7 +149,14 @@ def allow_user_to_edit_maps(sender, instance, created, *args, **kwargs):
 
     assign_perm("view_bucket", user_or_group=instance.created_by, obj=instance.bucket)
     assign_perm("change_bucket", user_or_group=instance.created_by, obj=instance.bucket)
-    assign_perm("delete_bucket", user_or_group=instance.created_by, obj=instance.bucket)    
+    assign_perm("delete_bucket", user_or_group=instance.created_by, obj=instance.bucket)
+    # FIXME / GUP specific : assign also to (1st) user's group
+    try:
+        user_group = instance.created_by.groups.all()[0]
+        assign_perm("view_map", user_or_group=user_group, obj=instance)
+        assign_perm("change_map", user_or_group=user_group, obj=instance)
+    except:
+        pass    
 
 
 @receiver(post_save, sender=User)
