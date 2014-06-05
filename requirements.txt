@@ -22,7 +22,8 @@ django-haystack==2.1.0
 pyelasticsearch==0.6.1
 
 django-cms==3.0.2
-djangocms-text-ckeditor==2.1.4
+#djangocms-text-ckeditor==2.1.4 still a fix important for us and so far not yet tagged
+-e git+https://github.com/divio/djangocms-text-ckeditor.git@f20f1aa810802c89db346916db57db339fdf92e3#egg=djangocms-text-ckeditor
 django-filer==0.9.5
 
 django-classy-tags==0.4
