@@ -167,7 +167,6 @@ models.signals.post_save.connect(create_api_key, sender=User)
 @receiver(post_save, sender=User)
 def assign_CMS_editor_perm_to_groups(sender, instance, created, *args, **kwargs):
     if created:
-        print "instance= %s" % instance
         assign_perm("cms.view_page", user_or_group=instance)
         assign_perm("cms.change_page", user_or_group=instance)
         assign_perm("cms.publish_page", user_or_group=instance)
