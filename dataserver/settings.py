@@ -9,8 +9,9 @@ ADMINS = (
 
 MANAGERS = ADMINS
 
-CARTO_BASE_URL = "http://gup.extra-muros.coop/carte/"
-
+# !! MOVE ME TO site_settings.py
+CARTO_BASE_URL = "http://localhost:8083/#/"
+# !! MOVE ME TO site_settings.py
 DATABASES = {
     'default': {
         'ENGINE': 'django.contrib.gis.db.backends.postgis', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
@@ -23,6 +24,7 @@ DATABASES = {
     }
 }
 
+# !! MOVE ME TO site_settings.py
 # Hosts/domain names that are valid for this site; required if DEBUG is False
 # See https://docs.djangoproject.com/en/1.5/ref/settings/#allowed-hosts
 ALLOWED_HOSTS = ['api.gup.extra-muros.coop', 'gup.extra-muros.coop']

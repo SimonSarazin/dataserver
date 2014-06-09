@@ -27,7 +27,9 @@
       {% cms_toolbar %}
 	{% if not request.user.is_superuser%}
 	<script type="text/javascript">
-		$(document).ready(function() {	$('a[href="?build"]').hide();});
+		$(document).ready(function() {	
+            $('a[href="?build"]').hide();
+        });
 	</script>
 	{% endif %}
     	<header>

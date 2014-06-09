@@ -24,6 +24,7 @@ class Bucket(models.Model):
         )
 
     created_by = models.ForeignKey(User, related_name='buckets_created')
+    name = models.CharField(max_length=200, verbose_name=_("name"))
 
     def __unicode__(self):
         return u"Bucket with %d objects" % len(self.files.all())
@@ -78,8 +79,14 @@ def allow_user_to_edit_buckets(sender, instance, created, *args, **kwargs):
     assign_perm("view_bucket", user_or_group=instance.created_by, obj=instance)
     assign_perm("change_bucket", user_or_group=instance.created_by, obj=instance)
     assign_perm("delete_bucket", user_or_group=instance.created_by, obj=instance)
-
-
+    # FIXME / GUP specific : assign also to (1st) user's group
+    try:
+        user_group = instance.created_by.groups.all()[0]
+        assign_perm("view_bucket", user_or_group=user_group, obj=instance)
+        assign_perm("change_bucket", user_or_group=user_group, obj=instance)
+    except:
+        pass
+        
 @receiver(post_save, sender=User)
 def allow_user_to_create_bucket_via_api(sender, instance, created, *args, **kwargs):
     if created:
