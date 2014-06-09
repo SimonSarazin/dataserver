@@ -63,7 +63,7 @@ class MarkerCategoryResource(ModelResource):
         resource_name = 'scout/marker_category'
 
         authentication = AnonymousApiKeyAuthentication()
-        authorization = ReadOnlyAuthorization()
+        authorization = Authorization()
 
 
 class TileLayerResource(GeoModelResource):
