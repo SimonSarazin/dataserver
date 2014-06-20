@@ -34,6 +34,6 @@ django-sekizai==0.7
 djangocms-admin-style==0.2.2
 djangocms-picture
 cmsplugin-filer==0.9.5
-django-reversion==1.7.1
+django-reversion==1.8.0
 
 pygeocoder

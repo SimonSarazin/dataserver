@@ -73,6 +73,11 @@ class ThumbnailView(View):
                 conversion_cmd = "unoconv -f pdf -o %s %s" % (os.path.join(settings.MEDIA_ROOT, target),
                                                               os.path.join(settings.MEDIA_ROOT, bfile.file.name))
                 subprocess.check_output(conversion_cmd.split())
+                try:
+                    subprocess.check_output(conversion_cmd.split(), cwd='/tmp')
+                except Exception:
+                    fp = os.path.join(settings.STATIC_ROOT, 'images/defaultfilepreview.jpg')
+                    return sendfile(request, fp)
 
         # Generate thumbnail
         try:
