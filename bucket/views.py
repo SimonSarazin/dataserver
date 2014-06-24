@@ -72,6 +72,7 @@ class ThumbnailView(View):
             else:
                 conversion_cmd = "unoconv -f pdf -o %s %s" % (os.path.join(settings.MEDIA_ROOT, target),
                                                               os.path.join(settings.MEDIA_ROOT, bfile.file.name))
+                os.environ['HOME'] = '/tmp'
                 subprocess.check_output(conversion_cmd.split())
                 try:
                     subprocess.check_output(conversion_cmd.split(), cwd='/tmp')
