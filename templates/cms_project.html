@@ -32,6 +32,13 @@
         });
 	</script>
 	{% endif %}
+    {% if request.user.is_authenticated%}
+    <script type="text/javascript">
+        $(document).ready(function() {  
+            $('ul.cms_toolbar-item').append("<li><a href='/accounts/signout/?next=/mapage/'><span>Changer de Compte</span></a></li>");
+        });
+    </script>
+    {% endif %}
     	<header>
     		<div class="wrap-header">
 	    		{% placeholder logo or %}
