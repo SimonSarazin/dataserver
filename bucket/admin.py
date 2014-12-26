@@ -9,6 +9,8 @@ class BucketFileCommentAdmin(admin.ModelAdmin):
     model = BucketFileComment
 
 class BucketAdmin(admin.ModelAdmin):
+    list_display = ('name', 'created_by', 'user_created')
+    list_filter = ('user_created', 'created_by')
     inlines = [
         InlineBucketFile,
     ]
