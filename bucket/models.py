@@ -24,6 +24,7 @@ class Bucket(models.Model):
         )
 
     created_by = models.ForeignKey(User, related_name='buckets_created')
+    user_created = models.BooleanField(default=True, help_text=_("If it was automatically created or by user request"))
     name = models.CharField(max_length=200, verbose_name=_("name"))
 
     def __unicode__(self):
@@ -54,7 +55,7 @@ class BucketFile(models.Model):
         hash = sha1(str(time.time())).hexdigest()
         fullname = os.path.join(upload_path, "%s%s" % (hash, ext))
         return fullname
-    
+
     file = models.FileField(upload_to=_upload_to, max_length=255)
     thumbnail_url = models.CharField(max_length=2048)
 
@@ -86,9 +87,8 @@ def allow_user_to_edit_buckets(sender, instance, created, *args, **kwargs):
         assign_perm("change_bucket", user_or_group=user_group, obj=instance)
     except:
         pass
-        
+
 @receiver(post_save, sender=User)
 def allow_user_to_create_bucket_via_api(sender, instance, created, *args, **kwargs):
     if created:
         assign_perm("bucket.add_bucket", instance)
-    
